@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=402,initial-scale=1">
+<title>Fred demo</title>
+<!--
+  Fred, rebuilt as a web page for recording only. Every size, colour and string
+  is taken from fred/apps/mobile (App.tsx, src/theme.tsx, scene.tsx,
+  reply-text.tsx, wait-line.tsx, calm-loader.tsx, sources.tsx, side-drawer.tsx,
+  jump-to-end.tsx); replies are laid out by the app's own reply-format.ts.
+  Screen: iPhone 18 Pro, 402 × 874 pt, insets 62 / 34.
+-->
+<style>
+  :root {
+    --cream:#FBF4E4; --paper:#FFFCF4; --oat:#F3E9D2; --sand:#E6DAC0; --pine:#316C33; --logo:#316C33;
+    --ink:#2B352C; --moss:#525F4F; --sage:#D5E7CC; --leaf:#8DBF8A; --sky:#8CB9D9; --fir:#5E9A62;
+    --grove:#76AD77; --bark:#BFA27C; --blush:#F6DDD3; --clay:#A4432B; --warn:#7A2E1B; --plum:#653F5D;
+    --shade:rgba(49,108,51,.10); --status:#000;
+  }
+  .night {
+    --cream:#16221E; --paper:#1F2E28; --oat:#2A3C34; --sand:#35483F; --pine:#A5D6A0; --logo:#E3EEDA;
+    --ink:#EDF2E6; --moss:#A7B6A5; --sage:#2E4A3A; --leaf:#86BD84; --sky:#8CB9D9; --fir:#6CAA70;
+    --grove:#79B07A; --bark:#A98C68; --blush:#4D342E; --clay:#F2A48C; --warn:#FAC7B5; --plum:#DDB6D2;
+    --shade:rgba(0,0,0,.35); --status:#fff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 402px; height: 874px; overflow: hidden; background: #000; }
+  body { font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  #phone { position: relative; width: 402px; height: 874px; overflow: hidden; background: var(--cream); display: flex; flex-direction: column; }
+  .tint { position: absolute; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+  .contain { -webkit-mask-size: contain; mask-size: contain; -webkit-mask-position: center; mask-position: center; }
+
+  /* Status bar and island (not part of the app; what an iPhone screen recording shows) */
+  #status { position: absolute; top: 0; left: 0; right: 0; height: 54px; z-index: 50; color: var(--status); pointer-events: none; }
+  #status .time { position: absolute; left: 0; width: 140px; top: 18px; text-align: center; font-family: inherit; font-weight: 600; font-size: 17px; line-height: 22px; letter-spacing: -.2px; }
+  #status .right { position: absolute; right: 30px; top: 22px; display: flex; gap: 7px; align-items: center; }
+  #island { position: absolute; top: 11px; left: 138px; width: 126px; height: 37px; border-radius: 19px; background: #000; z-index: 51; }
+  #homebar { position: absolute; bottom: 8px; left: 131px; width: 140px; height: 5px; border-radius: 3px; background: var(--status); opacity: .9; z-index: 50; }
+
+  /* Scene (header horizon) */
+  #scene { position: relative; overflow: hidden; z-index: 2; flex: none; background: #263250; }
+  #scene .fill { position: absolute; inset: 0; }
+  .star { position: absolute; width: 3px; height: 3px; border-radius: 2px; background: #FFFCF4; opacity: .9; }
+  #wheel { position: absolute; }
+  .orbBox { position: absolute; display: flex; align-items: center; justify-content: center; }
+  .orbBox > div { position: absolute; border-radius: 50%; }
+  #logoBox { position: absolute; right: 18px; }
+  #menu { position: absolute; left: 14px; width: 48px; height: 48px; z-index: 5; }
+  #menu .disc { position: absolute; inset: 0; border-radius: 24px; display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; box-shadow: 0 3px 10px var(--shade); }
+  #menu .disc i { display: block; width: 18px; height: 2.5px; border-radius: 2px; }
+  #menu .disc i:nth-child(2) { width: 12px; }
+
+  /* Page */
+  #veil { position: absolute; left: 0; right: 0; bottom: 0; background: #C9A0AE; opacity: 0; z-index: 1; pointer-events: none; }
+  #thread { flex: 1; overflow: hidden; position: relative; }
+  #threadInner { padding: 10px 20px 8px; will-change: transform; }
+  .emptyWrap { margin-top: 18px; padding: 0 14px; }
+  .emptyLead { font-family: Georgia, serif; color: var(--ink); font-size: 32px; line-height: 40px; }
+  .empty { color: var(--moss); font-size: 15px; line-height: 22px; margin-top: 14px; }
+  .startersLabel { color: var(--moss); font-size: 14px; font-weight: 600; margin-top: 28px; margin-bottom: 10px; line-height: 17px; }
+  .starters { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .starter { min-height: 48px; display: flex; align-items: center; padding: 10px 16px; background: var(--paper); border-radius: 18px; border: 1px solid var(--sand); color: var(--ink); font-size: 15px; line-height: 21px; }
+  .turn { margin-bottom: 34px; display: flex; flex-direction: column; }
+  .askedNote { align-self: flex-end; max-width: 86%; margin-bottom: 16px; background: var(--sage); border-radius: 18px 18px 6px 18px; padding: 10px 16px; font-family: Georgia, serif; color: var(--ink); font-size: 19px; line-height: 26px; }
+  .cards { display: flex; flex-direction: column; gap: 22px; }
+  .wrap { display: flex; flex-direction: column; gap: 10px; }
+  .body { color: var(--ink); font-size: 16px; line-height: 24px; }
+  .body b { font-weight: 700; }
+  .row { display: flex; gap: 10px; }
+  .row .body { flex: 1; }
+  .badge { align-self: flex-start; min-width: 22px; min-height: 22px; border-radius: 11px; margin-top: 1px; padding: 0 4px; background: var(--sage); display: flex; align-items: center; justify-content: center; color: var(--pine); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .dotBox { align-self: flex-start; width: 22px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .dotBox i { width: 6px; height: 6px; border-radius: 3px; background: var(--leaf); }
+  .warnBlock { background: var(--blush); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .warnBlock b { color: var(--warn); }
+  .heading { color: var(--pine); font-size: 14px; font-weight: 700; margin-top: 4px; }
+  .waitRow { display: flex; align-items: center; gap: 10px; }
+  .waitLabel { color: var(--moss); font-size: 14px; font-style: italic; }
+  .waiting { margin-top: 12px; }
+  .loader { position: relative; flex: none; }
+  .loader .ground { position: absolute; bottom: 0; border-radius: 99px; background: var(--sage); }
+  .loader .tree { position: absolute; inset: 0; transform-origin: 50% 100%; }
+  .loader .tint { inset: 0; }
+  .disclaimer { color: var(--plum); font-size: 13px; line-height: 19px; margin-top: 14px; border-top: 1px solid var(--sand); padding-top: 10px; }
+  .sources { margin-top: 14px; border-top: 1px solid var(--sand); }
+  .sources .toggle { display: flex; align-items: center; gap: 8px; min-height: 48px; }
+  .sources .label { color: var(--pine); font-size: 14px; font-weight: 700; }
+  .sources .summary { flex: 1; color: var(--moss); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sources .chev { color: var(--pine); font-size: 14px; width: 18px; text-align: center; }
+
+  /* Composer */
+  #bottom { flex: none; position: relative; z-index: 0; }
+  #jump { position: absolute; left: 163px; top: -44px; width: 76px; height: 34px; border-radius: 17px; background: var(--sage); box-shadow: 0 2px 10px var(--shade); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .22s; }
+  #jump .tint { position: relative; width: 14px; height: 14px; transform: rotate(180deg); background: var(--pine); }
+  #deep { display: none; align-items: center; gap: 8px; align-self: flex-start; min-height: 48px; margin: 6px 0 0 14px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--sand); background: var(--paper); width: max-content; }
+  #deep .dot { width: 12px; height: 12px; border-radius: 6px; border: 2px solid var(--moss); }
+  #deep .t { color: var(--ink); font-size: 14px; font-weight: 600; }
+  #deep .n { color: var(--moss); font-size: 13px; }
+  .composer { padding: 8px 12px 44px; }
+  .pill { display: flex; align-items: flex-end; gap: 6px; padding: 6px; background: var(--paper); border-radius: 30px; border: 1px solid var(--sand); box-shadow: 0 4px 16px var(--shade); }
+  .input { flex: 1; color: var(--ink); font-size: 16px; min-height: 48px; padding: 10px 14px; line-height: 28px; }
+  .input.placeholder { color: var(--moss); }
+  .caret { display: inline-block; width: 2px; height: 20px; background: #3478F6; vertical-align: -4px; margin-left: 1px; }
+  #send { width: 48px; height: 48px; border-radius: 999px; display: flex; align-items: center; justify-content: center; background: var(--sand); flex: none; }
+  #send .tint { position: relative; width: 22px; height: 22px; background: var(--moss); }
+  #send .stop { width: 14px; height: 14px; border-radius: 3px; background: var(--paper); display: none; }
+  #send.on { background: var(--pine); } #send.on .tint { background: var(--paper); }
+  #send.busy { background: var(--clay); } #send.busy .tint { display: none; } #send.busy .stop { display: block; }
+
+  /* "Show touches", as in an iOS demo recording */
+  #touch { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(120,120,120,.38); border: 2px solid rgba(255,255,255,.75); z-index: 60; opacity: 0; pointer-events: none; transition: opacity .12s, transform .12s; transform: scale(.7); }
+  #touch.down { opacity: 1; transform: scale(1); }
+</style>
+</head>
+<body>
+<div id="phone">
+  <div id="status"><div class="time">9:41</div>
+    <div class="right">
+      <svg width="19" height="12" viewBox="0 0 19 12"><g fill="currentColor"><rect x="0" y="8" width="3.2" height="4" rx=".8" opacity=".35"/><rect x="5" y="5.5" width="3.2" height="6.5" rx=".8" opacity=".35"/><rect x="10" y="3" width="3.2" height="9" rx=".8" opacity=".35"/><rect x="15" y="0" width="3.2" height="12" rx=".8" opacity=".35"/></g></svg>
+      <svg width="17" height="12" viewBox="0 0 17 12"><path fill="currentColor" d="M8.5 2.3c2.4 0 4.6.9 6.3 2.5l1.2-1.3A10.8 10.8 0 0 0 8.5.5 10.8 10.8 0 0 0 1 3.5l1.2 1.3A9 9 0 0 1 8.5 2.3zm0 3.6c1.4 0 2.7.5 3.8 1.4l1.2-1.3a7.4 7.4 0 0 0-10 0l1.2 1.3c1-.9 2.4-1.4 3.8-1.4zm0 3.5c-.6 0-1.1.2-1.5.6L8.5 11.6 10 10c-.4-.4-.9-.6-1.5-.6z"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.8" fill="none" stroke="currentColor" opacity=".35"/><rect x="2" y="2" width="20" height="9" rx="2.5" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2z" fill="currentColor" opacity=".4"/></svg>
+    </div>
+  </div>
+  <div id="island"></div>
+
+  <div id="scene">
+    <div class="fill" id="skyDusk" style="background:#EDBFB4"></div>
+    <div class="fill" id="skyDay" style="background:#DDEDF2"></div>
+    <div class="fill" id="stars"></div>
+    <div id="wheel">
+      <div class="orbBox" id="sun"><div class="glow" style="background:#FBE49C;opacity:.3"></div><div class="core" style="background:#FBE49C"></div></div>
+      <div class="orbBox" id="moon"><div class="glow" style="background:#FFFCF4;opacity:.16"></div><div class="core" style="background:#FFFCF4"></div></div>
+    </div>
+    <div class="fill" id="clouds">
+      <div class="tint contain" id="cloud1" style="width:80px;height:35px;background:#FFFCF4;-webkit-mask-image:url(ui/cloud.png);mask-image:url(ui/cloud.png)"></div>
+      <div class="tint contain" id="cloud2" style="width:52px;height:23px;background:#FFFCF4;-webkit-mask-image:url(ui/cloud.png);mask-image:url(ui/cloud.png)"></div>
+      <div class="tint contain" id="gull" style="width:22px;height:12px;background:#FFFCF4;-webkit-mask-image:url(ui/gull.png);mask-image:url(ui/gull.png)"></div>
+    </div>
+    <div class="tint hill" id="backN" style="background:#34495C;-webkit-mask-image:url(ui/hill-back.png);mask-image:url(ui/hill-back.png)"></div>
+    <div class="tint hill" id="backD" style="background:#C3DEC6;-webkit-mask-image:url(ui/hill-back.png);mask-image:url(ui/hill-back.png)"></div>
+    <div class="tint hill" id="midN" style="background:#284338;-webkit-mask-image:url(ui/hill-mid.png);mask-image:url(ui/hill-mid.png)"></div>
+    <div class="tint hill" id="midD" style="background:#A8CFA8;-webkit-mask-image:url(ui/hill-mid.png);mask-image:url(ui/hill-mid.png)"></div>
+    <div class="tint hill" id="front" style="background:var(--cream);-webkit-mask-image:url(ui/hill-front.png);mask-image:url(ui/hill-front.png)"></div>
+    <div class="tint hill" id="frontVeil" style="background:#C9A0AE;opacity:0;-webkit-mask-image:url(ui/hill-front.png);mask-image:url(ui/hill-front.png)"></div>
+    <div id="logoBox">
+      <div class="tint contain" id="logoD" style="position:relative;width:60.7px;height:28px;background:#316C33;-webkit-mask-image:url(ui/fred-logo.png);mask-image:url(ui/fred-logo.png)"></div>
+      <div class="tint contain" id="logoN" style="top:0;left:0;width:60.7px;height:28px;background:#E3EEDA;opacity:0;-webkit-mask-image:url(ui/fred-logo.png);mask-image:url(ui/fred-logo.png)"></div>
+    </div>
+  </div>
+
+  <div id="thread"><div id="threadInner"></div></div>
+  <div id="veil"></div>
+
+  <div id="bottom">
+    <div id="jump"><div class="tint contain" style="-webkit-mask-image:url(ui/arrow-up.png);mask-image:url(ui/arrow-up.png)"></div></div>
+    <div id="deep"><div class="dot"></div><span class="t">Deep thinking</span><span class="n">slower, more careful</span></div>
+    <div class="composer"><div class="pill">
+      <div class="input placeholder" id="input">Ask about survival…</div>
+      <div id="send"><div class="tint contain" style="-webkit-mask-image:url(ui/arrow-up.png);mask-image:url(ui/arrow-up.png)"></div><div class="stop"></div></div>
+    </div></div>
+  </div>
+
+  <div id="menu"><div class="disc" id="menuD" style="background:#316C33"><i style="background:#FFFCF4"></i><i style="background:#FFFCF4"></i><i style="background:#FFFCF4"></i></div>
+    <div class="disc" id="menuN" style="background:#A5D6A0;opacity:0"><i style="background:#1F2E28"></i><i style="background:#1F2E28"></i><i style="background:#1F2E28"></i></div></div>
+  <div id="homebar"></div>
+  <div id="touch"></div>
+</div>
+
+<script src="reply-format.js"></script>
+<script>
+"use strict";
+const W = 402, TOP = 62, $ = (s) => document.querySelector(s);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+// ── Scene geometry (scene.tsx) ──
+const state = { sky: 236, turn: 0, t0: performance.now(), drift0: 0.45, glide0: 0.5 };
+const STARS = [[0.08, 0.3], [0.2, 0.62], [0.3, 0.12], [0.52, 0.5], [0.66, 0.2], [0.8, 0.58], [0.92, 0.2]];
+const nightness = (t) => Math.abs(t - 2 * Math.round(t / 2));
+const veiled = (n) => Math.min(1, Math.max(0, (0.5 - Math.abs(n - 0.5)) / 0.38));
+let night = false;
+
+function layoutScene() {
+  const height = TOP + state.sky, hills = { w: W, h: W / 4 };
+  const open = Math.max(40, height - TOP - hills.h * 0.5);
+  const orb = Math.min(60, Math.max(30, open * 0.42));
+  const rest = { x: W * 0.36, y: TOP + 0.56 * open };
+  const hub = height + orb * 0.7, rim = hub - rest.y;
+  const sc = $('#scene'); sc.style.height = height + 'px'; $('#veil').style.top = height + 'px';
+  document.querySelectorAll('.hill').forEach((h) => Object.assign(h.style, { left: 0, bottom: '-1px', width: W + 'px', height: hills.h + 'px' }));
+  Object.assign($('#wheel').style, { left: rest.x - rim + 'px', top: hub - rim + 'px', width: rim * 2 + 'px', height: rim * 2 + 'px' });
+  Object.assign($('#sun').style, { left: rim - orb + 'px', top: -orb + 'px', width: orb * 2 + 'px', height: orb * 2 + 'px' });
+  Object.assign($('#moon').style, { left: rim - orb + 'px', top: rim * 2 - orb + 'px', width: orb * 2 + 'px', height: orb * 2 + 'px' });
+  const sz = (el, d) => Object.assign(el.style, { width: d + 'px', height: d + 'px' });
+  sz($('#sun .glow'), orb * 1.7); sz($('#sun .core'), orb); sz($('#moon .glow'), orb * 1.6); sz($('#moon .core'), orb * 0.86);
+  $('#stars').innerHTML = STARS.map(([x, y]) => `<div class="star" style="left:${x * W}px;top:${TOP + y * open}px"></div>`).join('');
+  $('#cloud1').style.top = TOP + open * 0.12 + 'px';
+  $('#cloud2').style.top = TOP + open * 0.5 + 'px';
+  $('#gull').style.top = TOP + open * 0.42 + 'px';
+  $('#logoBox').style.top = TOP + 30 - 14 + 'px';
+  $('#menu').style.top = TOP + 30 - 24 + 'px';
+  state.geo = { height, open, orb, rest, hub, rim };
+}
+
+function frame(now) {
+  const s = (now - state.t0) / 1000;
+  // Clouds drift over 110 s, the gull glides over 34 s.
+  const lap = [-90, W + 10], half = (lap[0] + lap[1]) / 2;
+  const d = (state.drift0 + s / 110) % 1, g = (state.glide0 + s / 34) % 1;
+  $('#cloud1').style.transform = `translateX(${lap[0] + (lap[1] - lap[0]) * d}px)`;
+  const d2 = d < 0.5 ? half + (lap[1] - half) * (d / 0.5) : lap[0] + (half - lap[0]) * ((d - 0.5) / 0.5);
+  $('#cloud2').style.transform = `translateX(${d2}px)`;
+  const ty = [0, -9, 2, -7, 0], seg = Math.min(3, Math.floor(g * 4)), f = g * 4 - seg;
+  const flap = Math.floor(g * 24) % 2 === 0 ? 1 - (g * 24 % 1) * 0.45 : 0.55 + (g * 24 % 1) * 0.45;
+  $('#gull').style.transform = `translateX(${-40 + (W + 80) * g}px) translateY(${ty[seg] + (ty[seg + 1] - ty[seg]) * f}px) scaleY(${flap})`;
+
+  // The day-night wheel (theme.tsx follow()).
+  const n = nightness(state.turn);
+  $('#wheel').style.transform = `rotate(${state.turn * 180}deg)`;
+  $('#skyDusk').style.opacity = n < 0.5 ? 1 : 2 - 2 * n;
+  $('#skyDay').style.opacity = Math.max(0, 1 - 2 * n);
+  $('#stars').style.opacity = Math.max(0, (n - 0.55) / 0.45);
+  $('#clouds').style.opacity = 0.9 - 0.68 * n;
+  for (const id of ['#backN', '#midN']) $(id).style.opacity = Math.min(1, n / 0.12);
+  for (const id of ['#backD', '#midD']) $(id).style.opacity = 1 - n;
+  const v = veiled(n);
+  $('#frontVeil').style.opacity = v; $('#veil').style.opacity = v;
+  const dayO = n < 0.5 ? 1 : 2 - 2 * n, nightO = n < 0.5 ? 2 * n : 1;
+  $('#logoD').style.opacity = dayO; $('#logoN').style.opacity = nightO;
+  $('#menuD').style.opacity = dayO; $('#menuN').style.opacity = nightO;
+  if (!night && n > 0.5) { night = true; $('#phone').classList.add('night'); }
+  if (night && n < 0.5) { night = false; $('#phone').classList.remove('night'); }
+
+  // Calm loaders (calm-loader.tsx), one 4.2 s loop.
+  document.querySelectorAll('.loader').forEach((el) => drawLoader(el, ((now - Number(el.dataset.t0)) / 4200) % 1));
+  requestAnimationFrame(frame);
+}
+
+// ── Calm loader ──
+const lerpAt = (x, xs, ys) => { if (x <= xs[0]) return ys[0]; for (let i = 1; i < xs.length; i++) if (x <= xs[i]) return ys[i - 1] + (ys[i] - ys[i - 1]) * ((x - xs[i - 1]) / (xs[i] - xs[i - 1] || 1)); return ys.at(-1); };
+const PIECES = [['tree-trunk', 'bark', 0.02, 0.1], ['tree-low', 'fir', 0.08, 0.22], ['tree-mid', 'grove', 0.2, 0.34], ['tree-top', 'leaf', 0.32, 0.46]];
+function loaderHTML(size) {
+  return `<div class="loader" data-t0="${performance.now()}" data-size="${size}" style="width:${size}px;height:${size}px">
+    <div class="ground" style="width:${size * 0.56}px;height:${Math.max(2, size * 0.06)}px;left:${size * 0.22}px"></div>
+    <div class="tree">${PIECES.map(([img, tint]) => `<div class="tint contain piece" style="background:var(--${tint});-webkit-mask-image:url(ui/${img}.png);mask-image:url(ui/${img}.png)"></div>`).join('')}</div>
+    <div class="tint contain lgull" style="top:0;left:0;width:${size * 0.3}px;height:${size * 0.17}px;background:var(--sky);-webkit-mask-image:url(ui/gull.png);mask-image:url(ui/gull.png)"></div></div>`;
+}
+function drawLoader(el, p) {
+  const size = Number(el.dataset.size), tree = el.querySelector('.tree');
+  tree.style.opacity = lerpAt(p, [0, 0.84, 0.96, 1], [1, 1, 0, 0]);
+  tree.style.transform = `rotate(${lerpAt(p, [0, 0.46, 0.56, 0.68, 0.8, 1], [0, 0, 2.5, -2.5, 0, 0])}deg)`;
+  el.querySelectorAll('.piece').forEach((pc, i) => {
+    const [, , a, b] = PIECES[i];
+    pc.style.opacity = lerpAt(p, [a, b], [0, 1]);
+    pc.style.transform = `translateY(${lerpAt(p, [a, b], [size * 0.1, 0])}px)`;
+  });
+  const gl = el.querySelector('.lgull');
+  gl.style.opacity = lerpAt(p, [0.48, 0.54, 0.72, 0.8], [0, 1, 1, 0]);
+  gl.style.transform = `translateX(${lerpAt(p, [0.48, 0.8], [-size * 0.1, size * 0.72])}px) translateY(${lerpAt(p, [0.48, 0.64, 0.8], [size * 0.12, 0, size * 0.08])}px)`;
+}
+
+// ── Reply rendering (reply-text.tsx, via the app's layout()) ──
+const runs = (spans) => spans.map((s) => (s.bold ? `<b>${esc(s.text)}</b>` : esc(s.text))).join('');
+function replyHTML(text) {
+  return `<div class="wrap">${layout(text).map((b) => {
+    if (b.kind === 'para') return `<div class="body">${runs(b.spans)}</div>`;
+    if (b.kind === 'heading') return `<div class="heading">${esc(b.text)}</div>`;
+    if (b.kind === 'step') return `<div class="row"><div class="badge">${b.n}</div><div class="body">${runs(b.spans)}</div></div>`;
+    if (b.kind === 'bullet') return `<div class="row"><div class="dotBox"><i></i></div><div class="body">${runs(b.spans)}</div></div>`;
+    if (b.kind === 'warn') return `<div class="warnBlock">${b.lines.map((l) => `<div class="body">${runs(l)}</div>`).join('')}</div>`;
+    return '';
+  }).join('')}</div>`;
+}
+const waitHTML = (step, size = 24) => `<div class="waitRow">${loaderHTML(size)}<div><div class="waitLabel">${step === 'reading' ? 'Reading the guides…' : 'Writing your answer…'}</div></div></div>`;
+const MEDICAL = 'This is general guidance from offline reference material, not professional medical advice. If you can reach emergency services, do that first.';
+const sourcesHTML = (summary) => `<div class="sources"><div class="toggle"><span class="label">Sources</span><span class="summary">${esc(summary)}</span><span class="chev">▾</span></div></div>`;
+
+// ── Screens ──
+function showEmpty(line, more) {
+  state.sky = 236; layoutScene();
+  $('#threadInner').innerHTML = `<div class="emptyWrap"><div class="emptyLead">${esc(line)}</div><div class="empty">${esc(more)}</div>
+    <div class="startersLabel">Try asking</div><div class="starters">
+    ${['How do I treat a bee sting?', 'How do I make stream water safe to drink?', 'Which way is north without a compass?'].map((q) => `<div class="starter">${esc(q)}</div>`).join('')}</div></div>`;
+}
+function startTurn(question) {
+  state.sky = 112; layoutScene();
+  $('#threadInner').innerHTML = `<div class="turn"><div class="askedNote">${esc(question)}</div><div class="cards"><div class="card" id="card"></div></div></div>`;
+  $('#threadInner').style.transform = 'translateY(0)';
+}
+function setDraft(text, caret) {
+  const inp = $('#input');
+  if (text === '') { inp.className = 'input placeholder'; inp.innerHTML = 'Ask about survival…'; }
+  else { inp.className = 'input'; inp.innerHTML = esc(text) + (caret ? '<span class="caret"></span>' : ''); }
+  $('#deep').style.display = text.trim() !== '' && !state.busy ? 'flex' : 'none';
+  $('#send').className = state.busy ? 'busy' : text.trim() !== '' ? 'on' : '';
+}
+function setBusy(b) { state.busy = b; $('#send').className = b ? 'busy' : ''; $('#deep').style.display = 'none'; }
+function checkBelow() {
+  const th = $('#thread'), inner = $('#threadInner');
+  const off = -parseFloat(inner.style.transform.replace(/[^-\d.]/g, '') || 0) || 0;
+  const below = inner.offsetHeight - (off + th.clientHeight);
+  $('#jump').style.opacity = below > th.clientHeight * 0.3 ? 0.88 : 0;
+}
+// follow(): as far down as the chat goes, no further than the newest question at the top (lastTop − 6).
+function follow(animate = true) {
+  const th = $('#thread'), inner = $('#threadInner');
+  const end = inner.offsetHeight - th.clientHeight, top = 10 - 6;
+  const y = Math.max(0, Math.min(end, top));
+  inner.style.transition = animate ? 'transform .3s ease-out' : 'none';
+  inner.style.transform = `translateY(${-y}px)`;
+  checkBelow();
+}
+async function tapAt(x, y, hold = 140) {
+  const t = $('#touch'); t.style.left = x + 'px'; t.style.top = y + 'px';
+  t.classList.add('down'); await sleep(hold); t.classList.remove('down');
+}
+async function tapEl(el, hold) { const r = el.getBoundingClientRect(); await tapAt(r.x + r.width / 2, r.y + r.height / 2, hold); }
+
+// ── Demos ──
+const DEMOS = {
+  // A: a first tap on a starter, answered from a field card (≈3.7 s on device).
+  async starter() {
+    showEmpty('Take a deep breath.', 'In through the nose, slowly out. Whatever comes next, you’ll think more clearly for it.');
+    await sleep(1800);
+    await tapEl(document.querySelector('.starter'), 160);
+    startTurn('How do I treat a bee sting?'); setBusy(true);
+    $('#card').innerHTML = waitHTML('reading', 34); follow(false);
+    await sleep(3200);
+    const text = "Happy to help.\nMost stings and bites just need cleaning and a cold compress. Watch closely for a severe allergic reaction.\n1. For a bee or wasp sting, get the stinger out quickly by scraping it off sideways with a fingernail or the edge of a card.\n2. Wash the area gently with mild soap and water.\n3. Hold a cold compress, or ice wrapped in cloth, on it for 10 to 15 minutes at a time.\n4. Try not to scratch it.\nDon't squeeze the stinger. It can push more venom in.\nTrouble breathing, dizziness, a swollen face or throat, or a rash spreading over the body means a severe allergic reaction. Get help immediately (see severe allergic reaction).";
+    $('#card').innerHTML = replyHTML(text) + `<div class="disclaimer">${MEDICAL}</div>` + sourcesHTML('Field card from ATP 4-02.11 First Aid 2026');
+    setBusy(false); setDraft(''); follow();
+    await sleep(3400);
+  },
+
+  // B: a typed question the model answers from the survival manual, streamed.
+  async model() {
+    showEmpty('Stay curious.', 'Wondering what that plant is, or which way is north? Just ask.');
+    const q = 'What is dead reckoning?';
+    setDraft(q, true);
+    await sleep(1500);
+    await tapEl($('#send'), 150);
+    startTurn(q); setBusy(true); setDraft('');
+    $('#card').innerHTML = waitHTML('reading', 34); follow(false);
+    await sleep(2800);
+    const lead = 'Happy to help.\n';
+    $('#card').innerHTML = replyHTML(lead) + `<div class="waiting">${waitHTML('writing')}</div>`;
+    await sleep(1600);
+    const body = "1. Dead reckoning is a navigation technique used to determine the position of an individual or vehicle based on known starting points and directional information, such as compass bearings and elapsed time.  \n2. It involves estimating movement along a specified azimuth (direction) from a reference point.  \n3. The process includes determining direction and distance from one point to another using tools like a protractor, map, and compass.  \n4. Dead reckoning can be used in conjunction with other navigation methods to minimize errors and ensure accurate positioning.";
+    const words = body.split(/(?<=\s)/);
+    let shown = '';
+    for (const w of words) {
+      shown += w; $('#card').innerHTML = replyHTML(lead + shown);
+      follow(false); await sleep(38 + Math.random() * 30);
+    }
+    $('#card').innerHTML = replyHTML(lead + body) + sourcesHTML('ATP 3-50.21 Survival 2018');
+    setBusy(false); follow();
+    await sleep(3400);
+  },
+
+  // C: the sun is the switch: swipe it sideways and the day turns to night.
+  async night() {
+    startTurn('What is dead reckoning?');
+    const body = "Happy to help.\n1. Dead reckoning is a navigation technique used to determine the position of an individual or vehicle based on known starting points and directional information, such as compass bearings and elapsed time.  \n2. It involves estimating movement along a specified azimuth (direction) from a reference point.  \n3. The process includes determining direction and distance from one point to another using tools like a protractor, map, and compass.  \n4. Dead reckoning can be used in conjunction with other navigation methods to minimize errors and ensure accurate positioning.";
+    $('#card').innerHTML = replyHTML(body) + sourcesHTML('ATP 3-50.21 Survival 2018');
+    setDraft(''); follow(false);
+    await sleep(1400);
+    const { rest } = state.geo, reach = W * 0.55, t = $('#touch');
+    // Press the sun and drag right: the wheel turns with the finger.
+    t.style.left = rest.x + 'px'; t.style.top = rest.y + 'px'; t.classList.add('down');
+    await sleep(180);
+    const dragMs = 700, dx = reach * 0.62;
+    for (let s = performance.now(), p = 0; p < 1; ) {
+      p = Math.min(1, (performance.now() - s) / dragMs);
+      const e = 1 - (1 - p) ** 2;
+      state.turn = (dx * e) / reach; t.style.left = rest.x + dx * e + 'px';
+      await sleep(16);
+    }
+    t.classList.remove('down');
+    await settle(1);
+    await sleep(2600);
+    // A tap on the moon turns the wheel the whole way round, back to day.
+    await tapAt(rest.x, rest.y, 140);
+    await settle(2);
+    state.turn = 0;
+    await sleep(1200);
+  },
+};
+// theme.tsx settle(): ease-in to half way (where the colours change), then ease-out to the end.
+async function run(to, ms, ease) {
+  const from = state.turn, s = performance.now();
+  for (let p = 0; p < 1; ) { p = Math.min(1, (performance.now() - s) / ms); state.turn = from + (to - from) * ease(p); await sleep(16); }
+}
+async function settle(end) {
+  const half = end - 0.5;
+  if (state.turn < half) await run(half, 140 + Math.abs(half - state.turn) * 1000, (p) => p * p);
+  await run(end, 140 + Math.abs(end - state.turn) * 1000, (p) => 1 - (1 - p) ** 3);
+}
+
+layoutScene();
+requestAnimationFrame(frame);
+window.play = async (name) => { await DEMOS[name](); window.__done = true; };
+const q = new URLSearchParams(location.search).get('demo');
+if (q && !new URLSearchParams(location.search).has('wait')) window.play(q);
+</script>
+</body>
+</html>

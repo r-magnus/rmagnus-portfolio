@@ -216,6 +216,35 @@ main { padding: 0 var(--gutter); }
 .station__glyph { width: 100%; max-width: 180px; justify-self: end; align-self: start; color: var(--ink-2); margin-top: var(--s4); }
 .glyph-accent { fill: var(--accent); }
 
+/* ── Demo reels ── */
+.reel {
+  grid-column: 2 / -1;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s5);
+  margin-top: var(--s5);
+}
+.reel figure { margin: 0; }
+.reel img { display: block; width: 100%; height: auto; outline: var(--hair) solid var(--ink); outline-offset: 5px; background: var(--paper-2); }
+.reel figcaption { margin-top: var(--s4); color: var(--ink-2); text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; }
+.reel figcaption span { color: var(--accent-ink); margin-right: .7em; }
+.reel__note { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: .68rem; max-width: 70ch; }
+.reel--single { grid-template-columns: minmax(0, 34rem); }
+
+.diagram { display: block; width: 100%; height: auto; border-top: var(--hair) solid var(--ink); padding-top: var(--s4); overflow: visible; }
+.dg-box { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.dg-strong { stroke-width: 1.6; }
+.dg-chip { fill: var(--paper-2); stroke: var(--rule); stroke-width: 1; }
+.dg-chip.dg-hl { stroke: var(--accent); }
+.dg-line { fill: none; stroke: var(--ink-2); stroke-width: 1.2; }
+.dg-accent { stroke: var(--accent); stroke-dasharray: 3 3; }
+.dg-head { fill: var(--ink-2); }
+.dg-head-a { fill: var(--accent); }
+.dg-serif { font: italic 500 19px var(--f-serif); fill: var(--ink); }
+.dg-sans { font: 600 13px var(--f-sans); fill: var(--ink); }
+.dg-mono { font: 400 9.5px var(--f-mono); fill: var(--ink); letter-spacing: 0; }
+.dg-mono.dg-hl, .dg-acc { fill: var(--accent-ink); }
+.dg-muted { fill: var(--muted); }
+.dg-b { font-weight: 500; }
+
 /* ── Benchmarks ── */
 .benchmarks { padding: var(--s9) 0 var(--s8); display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 9fr); gap: var(--s6); }
 .benchmarks__head h2 { margin: 0 0 var(--s3); font-size: .8rem; text-transform: uppercase; letter-spacing: .16em; font-weight: 500; }
@@ -257,6 +286,7 @@ main { padding: 0 var(--gutter); }
   .station__code { margin: 0 0 .6rem; }
   .station__glyph { position: absolute; top: var(--s8); right: 0; width: 96px; margin: 0; }
   .benchmarks { grid-template-columns: 1fr; }
+  .reel { grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
   .sheet { grid-template-columns: 1fr; min-height: 0; padding-top: clamp(300px, 56vh, 440px); }
@@ -272,6 +302,15 @@ main { padding: 0 var(--gutter); }
   .bm-list a { grid-template-columns: 3rem 1fr; row-gap: var(--s1); }
   .bm-desc, .bm-meta { grid-column: 2; }
   .collar--bottom { flex-direction: column; align-items: start; }
+  /* Phones: the demos become a swipeable row, the next one peeking in. */
+  .reel:not(.reel--single) {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: var(--s4);
+    margin-inline: calc(-1 * var(--gutter)); padding: 6px var(--gutter) var(--s3);
+    scroll-padding-inline: var(--gutter); -webkit-overflow-scrolling: touch;
+  }
+  .reel:not(.reel--single) figure { flex: 0 0 68%; scroll-snap-align: start; }
+  .reel:not(.reel--single) .reel__note { flex: 0 0 60%; align-self: center; }
+  .reel--single { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
