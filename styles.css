@@ -32,21 +32,6 @@
   color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #14160f;
-    --paper-2: #1c1f16;
-    --ink: #ece5d3;
-    --ink-2: #c4bca7;
-    --muted: #958e7b;
-    --rule: #34372b;
-    --contour: #5c4c35;
-    --contour-index: #8a7049;
-    --accent: #ff7b3a;
-    --accent-ink: #ff9a66;
-    color-scheme: dark;
-  }
-}
 :root[data-theme="dark"] {
   --paper: #14160f;
   --paper-2: #1c1f16;
@@ -98,10 +83,6 @@ a { color: inherit; }
 .theme-toggle__night { display: none; }
 :root[data-theme="dark"] .theme-toggle__day { display: none; }
 :root[data-theme="dark"] .theme-toggle__night { display: inline; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .theme-toggle__day { display: none; }
-  :root:not([data-theme]) .theme-toggle__night { display: inline; }
-}
 
 /* ── Hero sheet ── */
 .sheet {
