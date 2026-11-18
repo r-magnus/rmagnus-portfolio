@@ -179,16 +179,17 @@ main { padding: 0 var(--gutter); }
   border-bottom: var(--hair) solid var(--rule);
 }
 .station__id { position: relative; }
-.station__num {
+.station__tile {
   display: block;
-  font: 800 clamp(6rem, 17vw, 15rem)/.8 var(--f-sans);
-  letter-spacing: -.06em;
-  color: transparent;
-  -webkit-text-stroke: 1.2px var(--ink);
-  margin-left: -.06em;
+  width: clamp(140px, 15vw, 220px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  outline: var(--hair) solid var(--ink);
+  outline-offset: 6px;
 }
-.station--primary .station__num { -webkit-text-stroke-color: var(--accent); }
-.station__code { color: var(--ink-2); margin: var(--s4) 0 0; text-transform: uppercase; letter-spacing: .1em; max-width: 30ch; }
+.station--primary .station__tile { outline-color: var(--accent); }
+.station__code { color: var(--ink-2); margin: var(--s5) 0 0; text-transform: uppercase; letter-spacing: .1em; max-width: 30ch; }
 
 .station__name {
   margin: 0;
@@ -228,6 +229,8 @@ main { padding: 0 var(--gutter); }
 }
 .links a::after { content: " ↗"; font-weight: 400; color: var(--muted); }
 .links a:hover { color: var(--accent-ink); background-size: 100% 3px; }
+.soon { font-weight: 600; color: var(--muted); padding-bottom: 2px; border-bottom: 1.5px dashed var(--rule); }
+.soon .mono { font-weight: 400; margin-left: .35em; text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; }
 
 .station__glyph { width: 100%; max-width: 180px; justify-self: end; align-self: start; color: var(--ink-2); margin-top: var(--s4); }
 .glyph-accent { fill: var(--accent); }
@@ -282,7 +285,7 @@ main { padding: 0 var(--gutter); }
   .readings > div:nth-child(2) { border-right: 0; }
   .readings > div:nth-child(3) { padding-left: 0; }
   .readings > div:nth-child(n+3) { border-top: var(--hair) solid var(--rule); margin-top: var(--s3); }
-  .station__num { font-size: 5.5rem; }
+  .station__tile { width: 84px; outline-offset: 4px; }
   .station__glyph { display: none; }
   .facts > div { grid-template-columns: 1fr; gap: var(--s1); }
   .bm-list a { grid-template-columns: 3rem 1fr; row-gap: var(--s1); }

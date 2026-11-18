@@ -11,12 +11,12 @@
   const STATIONS_WIDE = [
     [0.66, 0.30, 1.00, 0.17, 'fred', 'Fred', '01'],
     [0.83, 0.19, 0.62, 0.10, 'side-quests', 'Side Quests', '02'],
-    [0.45, 0.14, 0.55, 0.09, '4eyez', '4eyez', '03'],
+    [0.45, 0.14, 0.55, 0.09, '4eyez', '“4eyez”', '03'],
   ];
   const STATIONS_NARROW = [
     [0.60, 0.20, 1.00, 0.30, 'fred', 'Fred', '01'],
     [0.24, 0.09, 0.60, 0.20, 'side-quests', 'Side Quests', '02'],
-    [0.30, 0.34, 0.50, 0.18, '4eyez', '4eyez', '03'],
+    [0.30, 0.34, 0.50, 0.18, '4eyez', '“4eyez”', '03'],
   ];
 
   // ── seeded value noise ──
