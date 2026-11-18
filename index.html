@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ryan Magnuson — Field Survey</title>
+  <meta name="description" content="Ryan Magnuson, computer science student. Offline AI, mobile apps, and systems work.">
+  <meta name="theme-color" content="#f3eee2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14160f" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#stations">Skip to projects</a>
+
+  <!-- Map collar -->
+  <header class="collar collar--top">
+    <span class="mono">34°26′N&ensp;119°39′W</span>
+    <span class="collar__mid">Computer Science · Westmont College</span>
+    <button class="theme-toggle mono" type="button" aria-label="Toggle day or night map">
+      <span class="theme-toggle__day">Day sheet</span><span class="theme-toggle__night">Night sheet</span>
+    </button>
+  </header>
+
+  <!-- Hero: generated contour map -->
+  <section class="sheet" aria-labelledby="title">
+    <svg class="terrain" id="terrain" aria-hidden="true"></svg>
+
+    <div class="title-block">
+      <p class="eyebrow mono">Quadrangle&ensp;/&ensp;2026 edition</p>
+      <h1 id="title">Ryan<br>Magnuson</h1>
+      <p class="lede">I build software that keeps working when the signal&nbsp;doesn’t.</p>
+    </div>
+
+    <nav class="legend" aria-label="Map legend">
+      <p class="legend__head mono">Legend</p>
+      <ol>
+        <li><a href="#fred"><span class="mark mark--station" aria-hidden="true"></span><span class="legend__num mono">01</span> Fred</a></li>
+        <li><a href="#side-quests"><span class="mark mark--station" aria-hidden="true"></span><span class="legend__num mono">02</span> Side Quests</a></li>
+        <li><a href="#4eyez"><span class="mark mark--station" aria-hidden="true"></span><span class="legend__num mono">03</span> 4eyez</a></li>
+        <li><a href="#benchmarks"><span class="mark mark--bench" aria-hidden="true"></span><span class="legend__num mono">BM</span> Benchmarks</a></li>
+      </ol>
+    </nav>
+  </section>
+
+  <main id="stations">
+
+    <!-- Station 01 · Fred -->
+    <article class="station station--primary" id="fred">
+      <div class="station__id">
+        <span class="station__num" aria-hidden="true">01</span>
+        <p class="mono station__code">Station 01 · Primary · 620 commits</p>
+      </div>
+
+      <div class="station__body">
+        <h2 class="station__name">Fred</h2>
+        <p class="station__line">An offline wilderness assistant. It runs a local language model on the phone itself, so it can answer first-aid and survival questions with no signal at all.</p>
+
+        <dl class="readings">
+          <div><dt class="mono">Held-out accuracy</dt><dd><span class="num">73.8</span><span class="unit">%</span></dd><p class="mono note">40 questions, graded blind</p></div>
+          <div><dt class="mono">Mean answer, on device</dt><dd><span class="num">15.3</span><span class="unit">s</span></dd><p class="mono note">Nothing Phone (3)</p></div>
+          <div><dt class="mono">Knowledge packs</dt><dd><span class="num">55</span></dd><p class="mono note">all 50 states, 408 MB</p></div>
+          <div><dt class="mono">Unsafe answers</dt><dd><span class="num">0</span></dd><p class="mono note">down from 4</p></div>
+        </dl>
+
+        <ul class="stack mono" aria-label="Built with">
+          <li>React Native / Expo</li><li>llama.rn</li><li>ONNX embeddings</li><li>RAG</li><li>SQLite</li><li>MapLibre + PMTiles</li>
+        </ul>
+
+        <p class="links">
+          <a href="https://github.com/r-magnus/fred">Source</a>
+          <a href="https://github.com/r-magnus/fred-app/releases/latest">Android test build</a>
+          <a href="https://github.com/r-magnus/fred-maps">Offline map bundles</a>
+        </p>
+      </div>
+
+      <svg class="station__glyph" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M100 30c38 4 66 30 68 70s-30 70-70 70-68-28-66-66 30-78 68-74z"/>
+          <path d="M101 52c26 3 46 22 47 48s-22 50-49 50-47-20-46-46 22-55 48-52z"/>
+          <path d="M101 74c15 2 26 13 27 27s-12 28-28 28-26-11-26-26 12-31 27-29z"/>
+          <path d="M100 92c5 0 9 4 9 9s-4 9-9 9-9-4-9-9 4-9 9-9z"/>
+        </g>
+        <path class="glyph-accent" d="M100 94l7 12h-14z"/>
+      </svg>
+    </article>
+
+    <!-- Station 02 · Side Quests -->
+    <article class="station" id="side-quests">
+      <div class="station__id">
+        <span class="station__num" aria-hidden="true">02</span>
+        <p class="mono station__code">Station 02 · Unwrap Hackathon 2026 · Team of 4</p>
+      </div>
+
+      <div class="station__body">
+        <h2 class="station__name">Side Quests</h2>
+        <p class="station__line">A party game for real phones. Everyone writes dares, the deck is dealt out, and players race the clock and prove each one with a photo.</p>
+
+        <dl class="facts">
+          <div><dt class="mono">Role</dt><dd>Lead contributor</dd></div>
+          <div><dt class="mono">Notable</dt><dd>AI-written quests, with an offline deck when the model is unavailable</dd></div>
+        </dl>
+
+        <ul class="stack mono" aria-label="Built with">
+          <li>Expo Router</li><li>Cloudflare Workers AI</li><li>Realtime game server</li><li>TypeScript</li>
+        </ul>
+
+        <p class="links"><a href="https://github.com/r-magnus/side-quests">Source</a></p>
+      </div>
+
+      <svg class="station__glyph" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.2">
+          <rect x="52" y="44" width="78" height="112" rx="3" transform="rotate(-12 91 100)"/>
+          <rect x="62" y="44" width="78" height="112" rx="3" transform="rotate(-2 101 100)"/>
+          <rect x="72" y="44" width="78" height="112" rx="3" transform="rotate(9 111 100)"/>
+        </g>
+        <path class="glyph-accent" d="M111 88l5 10 11 1-8 7 2 11-10-6-10 6 2-11-8-7 11-1z" transform="rotate(9 111 100)"/>
+      </svg>
+    </article>
+
+    <!-- Station 03 · 4eyez -->
+    <article class="station" id="4eyez">
+      <div class="station__id">
+        <span class="station__num" aria-hidden="true">03</span>
+        <p class="mono station__code">Station 03 · CS 125 Databases · Team of 2</p>
+      </div>
+
+      <div class="station__body">
+        <h2 class="station__name">4eyez</h2>
+        <p class="station__line">Event management for a youth group. Three databases each handle what they’re best at, all served from one containerized API.</p>
+
+        <dl class="facts">
+          <div><dt class="mono">Relational</dt><dd>MySQL for events, people and work orders</dd></div>
+          <div><dt class="mono">Cache</dt><dd>Redis for hot reads and sessions</dd></div>
+          <div><dt class="mono">Documents</dt><dd>MongoDB for loosely shaped records</dd></div>
+        </dl>
+
+        <ul class="stack mono" aria-label="Built with">
+          <li>Python</li><li>MySQL</li><li>Redis</li><li>MongoDB</li><li>Docker</li>
+        </ul>
+
+        <p class="links"><a href="https://github.com/r-magnus/cs-125-final-project-4eyez">Source</a></p>
+      </div>
+
+      <svg class="station__glyph" viewBox="0 0 200 200" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="1.2">
+          <ellipse cx="100" cy="56" rx="46" ry="12"/>
+          <path d="M54 56v26c0 7 21 12 46 12s46-5 46-12V56"/>
+          <path d="M54 92v26c0 7 21 12 46 12s46-5 46-12V92"/>
+          <path d="M54 128v26c0 7 21 12 46 12s46-5 46-12v-26"/>
+        </g>
+        <circle class="glyph-accent" cx="100" cy="56" r="5"/>
+      </svg>
+    </article>
+
+    <!-- Benchmarks -->
+    <section class="benchmarks" id="benchmarks" aria-labelledby="bm-title">
+      <div class="benchmarks__head">
+        <h2 id="bm-title" class="mono">Benchmarks</h2>
+        <p class="mono note">Smaller marks along the way: research, coursework, and things built for fun.</p>
+      </div>
+
+      <ol class="bm-list">
+        <li>
+          <a href="https://github.com/r-magnus/catlab-admissions-ai">
+            <span class="bm-code mono">BM-1</span>
+            <span class="bm-name">Admissions ML</span>
+            <span class="bm-desc">Predictive modelling on admissions data, CATlab research team</span>
+            <span class="bm-meta mono">Python · 2024</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/r-magnus/catlab-ocr">
+            <span class="bm-code mono">BM-2</span>
+            <span class="bm-name">CATlab OCR</span>
+            <span class="bm-desc">Recovering data from scanned records with text recognition</span>
+            <span class="bm-meta mono">Python · 2024</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/r-magnus/catlab-lr">
+            <span class="bm-code mono">BM-3</span>
+            <span class="bm-name">Linear Regression</span>
+            <span class="bm-desc">Multiple linear regression built for the lab’s data</span>
+            <span class="bm-meta mono">Python · 2024</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/r-magnus/cs140-chat-client">
+            <span class="bm-code mono">BM-4</span>
+            <span class="bm-name">Chat Client</span>
+            <span class="bm-desc">A terminal chat client over TCP sockets, with poll and ncurses</span>
+            <span class="bm-meta mono">C · 2025</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/r-magnus/lazy-minesweeper">
+            <span class="bm-code mono">BM-5</span>
+            <span class="bm-name">Lazy Minesweeper</span>
+            <span class="bm-desc">The 1990 classic, written from scratch with zero AI help</span>
+            <span class="bm-meta mono">Java · 2025</span>
+          </a>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="collar collar--bottom">
+    <div class="scale" aria-hidden="true">
+      <div class="scale__bar"><span></span><span></span><span></span><span></span></div>
+      <div class="scale__labels mono"><span>0</span><span>1</span><span>2 years</span></div>
+    </div>
+    <p class="contact">
+      <a href="https://github.com/r-magnus">github.com/r-magnus</a>
+    </p>
+    <p class="mono colophon">Contours generated live · Set in Public Sans, Newsreader &amp; Plex Mono</p>
+  </footer>
+
+  <script src="map.js" defer></script>
+</body>
+</html>
