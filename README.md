@@ -21,4 +21,5 @@ Import the repo in Vercel and keep the defaults: Framework "Other", no build com
 - `map.js`: contour generation (value noise and marching squares) and the theme toggle
 - `tabs.js`: the Projects / Core Values pill; opens whichever tab holds a linked `#id`
 - `theme.js`: applies the saved theme before first paint (kept out of `index.html` so the CSP needs no inline-script hash)
+- `robots.txt`, `sitemap.xml`: crawler hints; canonical URL, Open Graph tags and Person JSON-LD live in the `index.html` head. If the domain changes, update all three.
 - `vercel.json`: security headers (CSP, no framing, nosniff, referrer and permissions policy). New third-party resources must be added to the CSP.

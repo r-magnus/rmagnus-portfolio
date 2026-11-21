@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rmagnus-portfolio.vercel.app/sitemap.xml
