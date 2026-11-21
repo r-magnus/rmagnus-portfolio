@@ -19,5 +19,6 @@ Import the repo in Vercel and keep the defaults: Framework "Other", no build com
 - `index.html`: content
 - `styles.css`: design tokens (light and dark "night sheet") and layout
 - `map.js`: contour generation (value noise and marching squares) and the theme toggle
+- `tabs.js`: the Projects / Core Values pill; opens whichever tab holds a linked `#id`
 - `theme.js`: applies the saved theme before first paint (kept out of `index.html` so the CSP needs no inline-script hash)
 - `vercel.json`: security headers (CSP, no framing, nosniff, referrer and permissions policy). New third-party resources must be added to the CSP.

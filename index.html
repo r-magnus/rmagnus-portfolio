@@ -32,20 +32,31 @@
     <div class="title-block">
       <p class="eyebrow mono">Quadrangle&ensp;/&ensp;2026 edition</p>
       <h1 id="title">Ryan<br>Magnuson</h1>
+      <div class="tabs" role="tablist" aria-label="Sections" hidden>
+        <span class="tabs__ind" aria-hidden="true"></span>
+        <button class="tab" type="button" role="tab" id="tab-projects" aria-controls="projects" aria-selected="true"><span class="mark mark--station" aria-hidden="true"></span>Projects</button>
+        <button class="tab" type="button" role="tab" id="tab-values" aria-controls="values" aria-selected="false" tabindex="-1"><span class="mark mark--bearing" aria-hidden="true"></span>Core Values</button>
+      </div>
     </div>
 
     <nav class="legend" aria-label="Map legend">
       <p class="legend__head mono">Legend</p>
-      <ol>
+      <ol data-for="projects">
         <li><a href="#fred"><span class="mark mark--station" aria-hidden="true"></span><span class="legend__num mono">01</span> Fred</a></li>
         <li><a href="#side-quests"><span class="mark mark--station" aria-hidden="true"></span><span class="legend__num mono">02</span> Side Quests</a></li>
         <li><a href="#4eyez"><span class="mark mark--station" aria-hidden="true"></span><span class="legend__num mono">03</span> “4eyez”</a></li>
         <li><a href="#benchmarks"><span class="mark mark--bench" aria-hidden="true"></span><span class="legend__num mono">BM</span> Benchmarks</a></li>
       </ol>
+      <ol data-for="values" hidden>
+        <li><a href="#growth"><span class="mark mark--bearing" aria-hidden="true"></span><span class="legend__num mono">01</span> Obsessive Growth</a></li>
+        <li><a href="#agency"><span class="mark mark--bearing" aria-hidden="true"></span><span class="legend__num mono">02</span> Agency</a></li>
+        <li><a href="#others"><span class="mark mark--bearing" aria-hidden="true"></span><span class="legend__num mono">03</span> Intentionality with Others</a></li>
+      </ol>
     </nav>
   </section>
 
   <main id="stations">
+   <div class="panel" id="projects" role="tabpanel" aria-labelledby="tab-projects">
 
     <!-- Station 01 · Fred -->
     <article class="station station--primary" id="fred">
@@ -282,6 +293,82 @@
         </li>
       </ol>
     </section>
+   </div>
+
+   <!-- Core values -->
+   <section class="panel values" id="values" role="tabpanel" aria-labelledby="tab-values">
+    <header class="values__head">
+      <h2 class="mono">Core Values</h2>
+      <p class="mono note">Three bearings I navigate by.</p>
+    </header>
+
+    <article class="station value" id="growth">
+      <div class="station__id">
+        <svg class="value__tile" viewBox="0 0 120 120" role="img" aria-label="Map symbol: a summit ringed by contour lines">
+          <g transform="rotate(-10 60 64)">
+            <ellipse class="sym-c" cx="60" cy="70" rx="46" ry="34"/>
+            <ellipse class="sym-ci" cx="60" cy="65" rx="34" ry="25"/>
+            <ellipse class="sym-c" cx="60" cy="60" rx="23" ry="17"/>
+            <ellipse class="sym-c" cx="60" cy="56" rx="12" ry="9"/>
+          </g>
+          <path class="sym-acc" d="M60 47l6 10h-12z"/>
+        </svg>
+        <p class="mono station__code">Bearing 01</p>
+      </div>
+      <div class="station__body">
+        <h2 class="station__name">Obsessive Growth</h2>
+        <div class="value__text">
+          <p>Over the years, I’ve learned that I’m at my worst when I’m idle. When I stop moving, I get comfortable, and comfort slowly turns into stagnation.</p>
+          <p>Growth doesn’t have to be dramatic. It can be a new skill, a hard lesson, or a shift in perspective.</p>
+        </div>
+        <p class="value__commit"><span class="mono">Commitment</span>To be a little wiser and a little better today than I was yesterday.</p>
+      </div>
+    </article>
+
+    <article class="station value" id="agency">
+      <div class="station__id">
+        <svg class="value__tile" viewBox="0 0 120 120" role="img" aria-label="Map symbol: a compass with its needle set to its own heading">
+          <circle class="sym-c" cx="60" cy="62" r="40"/>
+          <circle class="sym-c sym-dash" cx="60" cy="62" r="29"/>
+          <path class="sym-ink" d="M60 22v7M60 95v7M20 62h7M93 62h7"/>
+          <text class="sym-n" x="60" y="16" text-anchor="middle">N</text>
+          <g transform="rotate(32 60 62)">
+            <path class="sym-acc" d="M60 28l7 34h-14z"/>
+            <path class="sym-line" d="M60 96l7-34h-14z"/>
+          </g>
+          <circle class="sym-hub" cx="60" cy="62" r="3.2"/>
+        </svg>
+        <p class="mono station__code">Bearing 02 · Newest</p>
+      </div>
+      <div class="station__body">
+        <h2 class="station__name">Agency</h2>
+        <div class="value__text">
+          <p>I move forward with the most clarity when I decide what success means to me, rather than borrowing someone else’s definition. That’s true in school, at work, and in my personal life.</p>
+        </div>
+        <p class="value__commit"><span class="mono">Commitment</span>To take ownership of my own direction. When I know what I’m working toward and why, the smaller decisions become much easier to make.</p>
+      </div>
+    </article>
+
+    <article class="station value" id="others">
+      <div class="station__id">
+        <svg class="value__tile" viewBox="0 0 120 120" role="img" aria-label="Map symbol: three waypoints joined by a route">
+          <circle class="sym-c" cx="60" cy="66" r="48"/>
+          <path class="sym-line sym-dash" d="M60 36L31 86H89z"/>
+          <circle class="sym-ring sym-ring--acc" cx="60" cy="36" r="9"/><circle class="sym-acc" cx="60" cy="36" r="3.4"/>
+          <circle class="sym-ring" cx="31" cy="86" r="9"/><circle class="sym-dot" cx="31" cy="86" r="3.4"/>
+          <circle class="sym-ring" cx="89" cy="86" r="9"/><circle class="sym-dot" cx="89" cy="86" r="3.4"/>
+        </svg>
+        <p class="mono station__code">Bearing 03</p>
+      </div>
+      <div class="station__body">
+        <h2 class="station__name">Intentionality with&nbsp;Others</h2>
+        <div class="value__text">
+          <p>I believe in “everything in moderation, including moderation.” My ambitions are big, and I hold myself to a high standard. Still, I’ve learned that I do my best work when I’m not doing it alone.</p>
+        </div>
+        <p class="value__commit"><span class="mono">Commitment</span>To be thoughtful about the people I surround myself with: the ones I learn from, work alongside, and support. My ambitions matter, but I won’t pursue them at the expense of the relationships that help make them possible.</p>
+      </div>
+    </article>
+   </section>
   </main>
 
   <footer class="collar collar--bottom">
@@ -296,5 +383,6 @@
   </footer>
 
   <script src="map.js" defer></script>
+  <script src="tabs.js" defer></script>
 </body>
 </html>
