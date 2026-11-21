@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rmagnus-portfolio.vercel.app/sitemap.xml
+Sitemap: https://www.ryanmagnuson.com/sitemap.xml
